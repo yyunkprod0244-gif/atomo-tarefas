@@ -1,0 +1,189 @@
+:root,
+[data-theme='claro'] {
+  --bg: #e9ebef;
+  --surface: #f5f6f8;
+  --text: #22252b;
+  --muted: #6b7280;
+  --accent: #4b5563;
+  --accent-text: #ffffff;
+  --shadow-dark: rgba(163, 170, 184, 0.7);
+  --shadow-light: rgba(255, 255, 255, 0.95);
+}
+
+[data-theme='escuro'] {
+  --bg: #1b1d22;
+  --surface: #23262d;
+  --text: #e7e9ee;
+  --muted: #9aa1ad;
+  --accent: #9ca3af;
+  --accent-text: #15171b;
+  --shadow-dark: rgba(0, 0, 0, 0.6);
+  --shadow-light: rgba(60, 65, 76, 0.45);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  transition: background 0.4s, color 0.4s;
+}
+
+.app {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 32px 16px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* Header */
+.header { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.header > div:nth-child(2) { flex: 1; min-width: 180px; }
+h1 { font-size: 2.4rem; letter-spacing: -1px; }
+.subtitle { color: var(--muted); margin-top: 4px; }
+
+/* Órbita 3D */
+.orbit {
+  position: relative;
+  width: 84px; height: 84px;
+  perspective: 400px;
+  transform-style: preserve-3d;
+}
+.nucleus {
+  position: absolute; inset: 32px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 14px var(--shadow-dark);
+}
+.ring {
+  position: absolute; inset: 0;
+  border: 2px solid var(--muted);
+  border-radius: 50%;
+  opacity: 0.55;
+  animation: spin 6s linear infinite;
+  transform-style: preserve-3d;
+}
+.ring i {
+  position: absolute; top: -5px; left: 50%;
+  width: 10px; height: 10px; margin-left: -5px;
+  border-radius: 50%; background: var(--text);
+}
+.r1 { transform: rotateX(70deg); }
+.r2 { transform: rotateX(70deg) rotateZ(60deg); animation-duration: 8s; }
+.r3 { transform: rotateX(70deg) rotateZ(120deg); animation-duration: 10s; }
+@keyframes spin { to { rotate: z 360deg; } }
+
+/* Card neumórfico */
+.card {
+  background: var(--surface);
+  border-radius: 24px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 12px 12px 28px var(--shadow-dark), -12px -12px 28px var(--shadow-light);
+  transition: background 0.4s, box-shadow 0.4s;
+}
+
+/* Form */
+.todo-form { display: flex; gap: 12px; }
+.todo-form input {
+  flex: 1; min-width: 0;
+  padding: 14px 16px;
+  border: none; border-radius: 14px;
+  background: var(--bg); color: var(--text);
+  font-size: 1rem; outline: none;
+  box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
+}
+.todo-form input:focus { outline: 2px solid var(--accent); }
+
+button { font-family: inherit; cursor: pointer; border: none; transition: transform 0.2s, box-shadow 0.2s; }
+
+.btn-primary {
+  padding: 0 22px; border-radius: 14px;
+  background: var(--accent); color: var(--accent-text);
+  font-weight: 600; font-size: 1rem;
+  box-shadow: 5px 5px 12px var(--shadow-dark), -5px -5px 12px var(--shadow-light);
+}
+.btn-primary:hover { transform: translateY(-2px) scale(1.03); }
+.btn-primary:active { transform: translateY(1px); }
+
+/* Filtros */
+.filter-bar { display: flex; flex-direction: column; gap: 10px; }
+.chips { display: flex; gap: 10px; flex-wrap: wrap; }
+.chip {
+  padding: 9px 18px; border-radius: 999px;
+  background: var(--surface); color: var(--text);
+  box-shadow: 4px 4px 9px var(--shadow-dark), -4px -4px 9px var(--shadow-light);
+}
+.chip:hover { transform: translateY(-2px); }
+.chip.active {
+  background: var(--accent); color: var(--accent-text);
+  box-shadow: inset 3px 3px 7px rgba(0,0,0,0.35);
+}
+.stats { font-size: 0.85rem; color: var(--muted); }
+
+/* Lista */
+.todo-list { list-style: none; display: flex; flex-direction: column; gap: 14px; perspective: 800px; }
+.todo-item {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 14px 16px; border-radius: 16px;
+  background: var(--surface);
+  box-shadow: 6px 6px 14px var(--shadow-dark), -6px -6px 14px var(--shadow-light);
+  transition: transform 0.25s, box-shadow 0.25s;
+  animation: enter 0.35s ease;
+}
+.todo-item:hover { transform: rotateX(4deg) translateZ(8px) translateY(-2px); }
+.todo-item label { display: flex; align-items: center; gap: 12px; flex: 1; cursor: pointer; min-width: 0; }
+.todo-item span { word-break: break-word; }
+.todo-item input[type='checkbox'] { width: 20px; height: 20px; accent-color: var(--accent); flex-shrink: 0; }
+.todo-item.done span { text-decoration: line-through; color: var(--muted); }
+@keyframes enter { from { opacity: 0; transform: translateY(12px) scale(0.97); } }
+
+.btn-remove {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--surface); color: var(--muted);
+  box-shadow: 3px 3px 7px var(--shadow-dark), -3px -3px 7px var(--shadow-light);
+}
+.btn-remove:hover { color: #e5484d; transform: scale(1.1) rotate(90deg); }
+
+.empty { text-align: center; color: var(--muted); padding: 20px 0; }
+
+/* Tema */
+.theme-toggle {
+  padding: 10px 16px; border-radius: 999px;
+  background: var(--surface); color: var(--text); font-weight: 600;
+  box-shadow: 5px 5px 12px var(--shadow-dark), -5px -5px 12px var(--shadow-light);
+}
+.theme-toggle:hover { transform: translateY(-2px); }
+
+/* Controles do cabeçalho + idioma */
+.controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lang-toggle {
+  display: inline-flex; padding: 4px; border-radius: 999px;
+  background: var(--surface);
+  box-shadow: inset 3px 3px 7px var(--shadow-dark), inset -3px -3px 7px var(--shadow-light);
+}
+.lang-btn {
+  padding: 7px 14px; border-radius: 999px;
+  background: transparent; color: var(--muted);
+  font-weight: 600; font-size: 0.85rem;
+}
+.lang-btn:hover { color: var(--text); }
+.lang-btn.active {
+  background: var(--accent); color: var(--accent-text);
+  box-shadow: 3px 3px 8px var(--shadow-dark);
+}
+
+.footer { text-align: center; color: var(--muted); font-size: 0.85rem; }
+
+@media (max-width: 520px) {
+  h1 { font-size: 2rem; }
+  .card { padding: 16px; }
+  .todo-form { flex-direction: column; }
+  .btn-primary { padding: 14px; }
+}
